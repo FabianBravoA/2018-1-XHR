@@ -1,3 +1,7 @@
+//Son cajas de respuestas para las peticiones
+let dogeResponse;
+/*let dogeResponse2;*/
+
 function downloadShibe(){
     //Mostramos el mensaje de que está cargando
     const charge = document.getElementById("loading");
@@ -8,13 +12,8 @@ function downloadShibe(){
         if (this.readyState == 4 && this.status == 200) { //Todas las respuestas “200 y algo” serán respuestas satisfactorias
             //Escondemos el mensaje de cargando
             charge.style = "display: none;";
-            const dogeResponse = JSON.parse(this.responseText); //No usar funciones flechas cuando usamos this.  usar json punto stringify cuando tratemos con objetos 
-            const dogeReceptorDiv = document.getElementById("dogeReceptor");
-            for(let dogeIndex=0; dogeIndex < dogeResponse.length; dogeIndex++){
-                const dogeImg = document.createElement('img'); //Aquí "almaceno" las imágenes
-                dogeImg.src = dogeResponse[dogeIndex];
-                dogeReceptorDiv.appendChild(dogeImg);
-            }
+            dogeResponse = JSON.parse(this.responseText); //No usar funciones flechas cuando usamos this.  usar json punto stringify cuando tratemos con objetos 
+            printDogos(); 
         }
     };
     xhttp.open("GET", "https://cors-anywhere.herokuapp.com/http://shibe.online/api/shibes?count=10&urls=true&httpsUrls=true", true); //Con GET sólo se accede a datos, NO se envían (Cuando se hace Login, se debería hacer con POST, no con GET). Va el verbo (GET) y luego la petición (URL)
@@ -24,4 +23,17 @@ function downloadShibe(){
      * Podemos seguir ejecutando código acá mientras esperamos la respuesta
      */
     console.log("Holi soy doge");
+}
+
+function printDogos(){
+    if(dogeResponse == undefined){ // (dogeResponse == undefined || dogeResponse2 == undefined)
+        return;
+    }
+
+    const dogeReceptorDiv = document.getElementById("dogeReceptor");
+    for(let dogeIndex=0; dogeIndex < dogeResponse.length; dogeIndex++){
+        const dogeImg = document.createElement('img'); //Aquí "almaceno" las imágenes
+        dogeImg.src = dogeResponse[dogeIndex];
+        dogeReceptorDiv.appendChild(dogeImg);
+    }
 }
