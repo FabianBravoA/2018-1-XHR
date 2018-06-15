@@ -37,3 +37,49 @@ function printDogos(){
         dogeReceptorDiv.appendChild(dogeImg);
     }
 }
+
+function downloadCats(){
+    const charge = document.getElementById("loadingCats");
+    charge.style = "display: block;";
+    const url = "https://cors-anywhere.herokuapp.com/http://shibe.online/api/cats?count=10&urls=true&httpsUrls=true"
+    fetch(url).then(  //Then recibe una función llamada cuando recibimos una respuesta. Entrega ''promesas''
+        (response)=>{
+            if(response.ok){
+                return response.json();
+            }
+        }
+    ).then( //Cuando la promesa se cumple.    Aquí anidamos más promesas
+        (responseJson)=>{
+            const catsReceptorDiv = document.getElementById("catsReceptor");
+            for(let catIndex=0; catIndex < responseJson.length; catIndex++){
+                const catImg = document.createElement('img'); //Aquí "almaceno" las imágenes
+                catImg.src = responseJson[catIndex];
+                catsReceptorDiv.appendChild(catImg);
+            }
+        }
+    ).catch( //Cuando no se cumple
+        (error)=>{
+            console.log("Petición falló, no tenemos gatitos por hoy");
+        }
+    ); 
+
+    /*Promise.all([   //Ejecuta todas las llamadas de manera paralela
+        fetch(url1),
+        fetch(url2),
+        fetch(url3)
+    ]).then(
+        (responses)=>{   //Responde a todas las promesas
+            return Promise.all(responses.map((response)=>{
+                return response.json();
+            }));
+        }
+    ).then((responseJsons)=>{ //Arreglo de respuestas en json
+         //
+         // Código que ocupa los jsons...
+         //
+    }).catch(
+        (error)=>{ // Al menos una llamada falló
+
+        }
+    );*/
+}
